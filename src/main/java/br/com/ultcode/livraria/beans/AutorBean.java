@@ -17,6 +17,7 @@ public class AutorBean {
 	public void gravar() {
 		System.out.println("Registrou");
 		new DAO<>(Autor.class).persist(autor);
+		this.autor = new Autor();
 	}
 	
 }
