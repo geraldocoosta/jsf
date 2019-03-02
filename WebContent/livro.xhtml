@@ -9,7 +9,7 @@
 
 	<h1>Novo livro</h1>
 	<h:form>
-		<h:messages />
+		<h:messages id="message-validation" />
 		<fieldset>
 			<legend>Dados do livro</legend>
 			<h:panelGrid columns="2">
@@ -23,10 +23,16 @@
 					<!-- validatorMessage ~> mensagem para validar mensagem
 					 	  requiredMessage  ~> Mensagem para validar um validate do jsf -->
 					<f:validateLength maximum="40" />
+					<f:ajax event="blur" render="message-validation" />
+					<!-- f:ajax dentro de um input, diz que esse dado vai ser envido via ajax
+					 Aqui podemos usar o atributo event para indicar quando vamos enviar esse
+					 dado -->
 				</h:inputText>
 				<h:outputLabel value="Isbn:" for="isbn" />
 				<h:inputText value="#{livroBean.livro.isbn}" id="isbn"
-					validator="#{livroBean.comecaComDigitoUm}" />
+					validator="#{livroBean.comecaComDigitoUm}" >
+					<f:ajax render="message-validation" event="keyup"/>	
+				</h:inputText>
 				<h:outputLabel value="Preco:" for="preco" />
 				<h:inputText value="#{livroBean.livro.preco}" id="preco">
 					<f:validateDoubleRange maximum="1000.0" minimum="10.0" />
@@ -57,17 +63,31 @@
 			</h:selectOneMenu>
 			<!-- Método para associar autor ao livro -->
 			<h:commandButton action="#{livroBean.gravarAutor}"
-				value="Gravar Autor" />
+				value="Gravar Autor">
+				<!-- ao associar um command button com a tag f:ajax, este vai enviar somente
+				 uma parte dos dados na requisição, esses dados são definidos com a atributo
+				 execute, onde definimos o componente que tem o dado que vamo enviar, com seu id
+				 fazemos isso -->
+				<!-- com o atributo render, definimos qual componente será atualizado, via id -->
+				<f:ajax execute="autor" render="tabela-autores" />
+			</h:commandButton>
 
 			<!-- Mesmo padrão do selectItems -->
-			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor">
+			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
+				id="tabela-autores">
 				<h:column>
 					<h:outputText value="#{autor.nome}" />
 				</h:column>
 			</h:dataTable>
 		</fieldset>
 
-		<h:commandButton action="#{livroBean.gravar}" value="Registrar" />
+		<h:commandButton action="#{livroBean.gravar}" value="Registrar">
+			<!--  com o @form, estamos indicando o envio de todo o form, mas podemos passar uma lista
+		de ids separados por espaço no execute 
+		Além do @form, tem outras possibilidades como 
+		@all , @this, @more -->
+			<f:ajax execute="@form" render=":tabelaDeLivros @form" />
+		</h:commandButton>
 	</h:form>
 
 	<h:dataTable id="tabelaDeLivros" value="#{livroBean.livros}"
@@ -83,7 +103,10 @@
 		</h:column>
 		<h:column>
 			<f:facet name="header">Preço</f:facet>
-			<h:outputText value="#{livro.preco}" />
+			<h:outputText value="#{livro.preco}">
+				<f:convertNumber type="currency" pattern="R$ #0.00"
+					currencySymbol="R$" locale="pt_BR" />
+			</h:outputText>
 		</h:column>
 		<h:column>
 			<f:facet name="header">Data de lançamento</f:facet>

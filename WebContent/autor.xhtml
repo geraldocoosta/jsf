@@ -11,9 +11,15 @@
 	<h:form>
 		<fieldset>
 			<legend>Autor</legend>
-			<h:outputLabel value="Nome" for="nome" />
-			<h:inputText value="#{autorBean.autor.nome}" id="nome" />
-			<h:commandButton action="#{autorBean.gravar}" value="Registrar" />
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Nome" for="nome" />
+				<h:inputText value="#{autorBean.autor.nome}" id="nome"
+					validatorMessage="Nome deve ter mais de 3 caracteres">
+					<f:validateLength minimum="3" />
+				</h:inputText>
+				<h:commandButton action="#{autorBean.gravar}" value="Registrar" />
+				<h:message for="nome" />
+			</h:panelGrid>
 		</fieldset>
 	</h:form>
 </h:body>
