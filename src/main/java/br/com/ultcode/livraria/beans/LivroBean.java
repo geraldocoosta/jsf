@@ -42,8 +42,8 @@ public class LivroBean implements Serializable {
 			 * Aqui, em vez de lançarmos uma exceção, vamos lançar um error message, para
 			 * aparecer bonitinho no front
 			 */
-			FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage(
-						"Livro deve ter pelo menos um autor"));
+			FacesContext.getCurrentInstance().addMessage("autor",
+					new FacesMessage("Livro deve ter pelo menos um autor"));
 			return;
 		}
 		new DAO<Livro>(Livro.class).persist(livro);
@@ -75,8 +75,7 @@ public class LivroBean implements Serializable {
 	 * digitado pelo usuário. Este método precisa lançar um ValidatorException,
 	 * exceção que sinalizará para o JSF que algo saiu errado
 	 */
-	public void comecaComDigitoUm(FacesContext context, UIComponent component, Object value)
-				throws ValidatorException {
+	public void comecaComDigitoUm(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String valor = value.toString();
 
 		if (valor.startsWith("1")) {
@@ -90,6 +89,15 @@ public class LivroBean implements Serializable {
 			 */
 			throw new ValidatorException(new FacesMessage("Não deveria começar com 1"));
 		}
+	}
+
+	public String formAutor() {
+		System.out.println("Chamando o formulario autor");
+		/*
+		 * aqui, devemos deixar explicito que queremos que o navegador faça o redirect,
+		 * no caso está fazendo um forward
+		 */
+		return "autor?faces-redirect=true";
 	}
 
 }

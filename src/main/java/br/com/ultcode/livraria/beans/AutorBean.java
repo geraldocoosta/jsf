@@ -14,10 +14,11 @@ public class AutorBean {
 		return autor;
 	}
 
-	public void gravar() {
+	public String gravar() {
 		System.out.println("Registrou");
 		new DAO<>(Autor.class).persist(autor);
 		this.autor = new Autor();
+		return "livro?faces-redirect=true";
 	}
 	
 }

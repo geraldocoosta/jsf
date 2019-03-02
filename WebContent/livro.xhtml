@@ -30,8 +30,8 @@
 				</h:inputText>
 				<h:outputLabel value="Isbn:" for="isbn" />
 				<h:inputText value="#{livroBean.livro.isbn}" id="isbn"
-					validator="#{livroBean.comecaComDigitoUm}" >
-					<f:ajax render="message-validation" event="keyup"/>	
+					validator="#{livroBean.comecaComDigitoUm}">
+					<f:ajax render="message-validation" event="keyup" />
 				</h:inputText>
 				<h:outputLabel value="Preco:" for="preco" />
 				<h:inputText value="#{livroBean.livro.preco}" id="preco">
@@ -46,6 +46,11 @@
 			</h:panelGrid>
 		</fieldset>
 
+		<!--  na action, usamos o nome da página que queremos acessar -->
+		<!--  o atributo immediate fará com que o método formAutor() seja executado 
+		durante a segunda fase APPLY_REQUEST_VALUES, antes da validação -->
+		<h:commandLink action="#{livroBean.formAutor}"
+			value="Cadastrar novo autor" immediate="true" />
 		<fieldset>
 			<legend>Dados do Autor</legend>
 			<h:outputLabel value="Selecione Autor" for="autor" />
@@ -61,6 +66,8 @@
 				<f:selectItems value="#{livroBean.autores}" var="autor"
 					itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
 			</h:selectOneMenu>
+
+
 			<!-- Método para associar autor ao livro -->
 			<h:commandButton action="#{livroBean.gravarAutor}"
 				value="Gravar Autor">
@@ -71,6 +78,7 @@
 				<!-- com o atributo render, definimos qual componente será atualizado, via id -->
 				<f:ajax execute="autor" render="tabela-autores" />
 			</h:commandButton>
+
 
 			<!-- Mesmo padrão do selectItems -->
 			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
