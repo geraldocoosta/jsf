@@ -4,124 +4,128 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-<h:head></h:head>
-<h:body>
+<!--  compondo esse conteudo no layout definido no template -->
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">Cadastro Livro</ui:define>
+	<ui:define name="conteudo">
+		<h:form>
+			<h:messages id="message-validation" />
+			<fieldset>
+				<legend>Dados do livro</legend>
+				<h:panelGrid columns="2">
 
-	<h1>Novo livro</h1>
-	<h:form>
-		<h:messages id="message-validation" />
-		<fieldset>
-			<legend>Dados do livro</legend>
-			<h:panelGrid columns="2">
-
-				<h:outputLabel value="Titulo" for="titulo" />
-				<h:inputText value="#{livroBean.livro.titulo}" id="titulo"
-					required="true" requiredMessage="Titulo obrigatorio"
-					validatorMessage="Titulo não pode ser superior a 40 caracteres">
-					<!-- Definindo a quantidade maxima de caracteres com um validador jsf,
+					<h:outputLabel value="Titulo" for="titulo" />
+					<h:inputText value="#{livroBean.livro.titulo}" id="titulo"
+						required="true" requiredMessage="Titulo obrigatorio"
+						validatorMessage="Titulo não pode ser superior a 40 caracteres">
+						<!-- Definindo a quantidade maxima de caracteres com um validador jsf,
 					 para mudar a mensagem, devemos usar outra atributo, validator message -->
-					<!-- validatorMessage ~> mensagem para validar mensagem
+						<!-- validatorMessage ~> mensagem para validar mensagem
 					 	  requiredMessage  ~> Mensagem para validar um validate do jsf -->
-					<f:validateLength maximum="40" />
-					<f:ajax event="blur" render="message-validation" />
-					<!-- f:ajax dentro de um input, diz que esse dado vai ser envido via ajax
+						<f:validateLength maximum="40" />
+						<f:ajax event="blur" render="message-validation" />
+						<!-- f:ajax dentro de um input, diz que esse dado vai ser envido via ajax
 					 Aqui podemos usar o atributo event para indicar quando vamos enviar esse
 					 dado -->
-				</h:inputText>
-				<h:outputLabel value="Isbn:" for="isbn" />
-				<h:inputText value="#{livroBean.livro.isbn}" id="isbn"
-					validator="#{livroBean.comecaComDigitoUm}">
-					<f:ajax render="message-validation" event="keyup" />
-				</h:inputText>
-				<h:outputLabel value="Preco:" for="preco" />
-				<h:inputText value="#{livroBean.livro.preco}" id="preco">
-					<f:validateDoubleRange maximum="1000.0" minimum="10.0" />
-				</h:inputText>
-				<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
-				<h:inputText value="#{livroBean.livro.dataLancamento.time}"
-					id="dataLancamento">
-					<!-- isso é um converter para data -->
-					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-				</h:inputText>
-			</h:panelGrid>
-		</fieldset>
+					</h:inputText>
+					<h:outputLabel value="Isbn:" for="isbn" />
+					<h:inputText value="#{livroBean.livro.isbn}" id="isbn"
+						validator="#{livroBean.comecaComDigitoUm}">
+						<f:ajax render="message-validation" event="keyup" />
+					</h:inputText>
+					<h:outputLabel value="Preco:" for="preco" />
+					<h:inputText value="#{livroBean.livro.preco}" id="preco">
+						<f:validateDoubleRange maximum="1000.0" minimum="10.0" />
+					</h:inputText>
+					<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
+					<h:inputText value="#{livroBean.livro.dataLancamento.time}"
+						id="dataLancamento">
+						<!-- isso é um converter para data -->
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:inputText>
+				</h:panelGrid>
+			</fieldset>
 
-		<!--  na action, usamos o nome da página que queremos acessar -->
-		<!--  o atributo immediate fará com que o método formAutor() seja executado 
+			<!--  na action, usamos o nome da página que queremos acessar -->
+			<!--  o atributo immediate fará com que o método formAutor() seja executado 
 		durante a segunda fase APPLY_REQUEST_VALUES, antes da validação -->
-		<h:commandLink action="#{livroBean.formAutor}"
-			value="Cadastrar novo autor" immediate="true" />
-		<fieldset>
-			<legend>Dados do Autor</legend>
-			<h:outputLabel value="Selecione Autor" for="autor" />
+			<h:commandLink action="#{livroBean.formAutor}"
+				value="Cadastrar novo autor" immediate="true" />
+			<fieldset>
+				<legend>Dados do Autor</legend>
+				<h:outputLabel value="Selecione Autor" for="autor" />
 
-			<!-- Pega o itemValue selecionado e popula no nosso ManagedBean -->
-			<h:selectOneMenu id="autor" value="#{livroBean.autorId}">
-				<!-- 
+				<!-- Pega o itemValue selecionado e popula no nosso ManagedBean -->
+				<h:selectOneMenu id="autor" value="#{livroBean.autorId}">
+					<!-- 
 				value ~> lista de autores
 				var ~> indica um autor dentro da iteração pela lista de autores
 				itemLabel ~> o que vamos mostrar do autor
 				itemValue ~> associar um valor ao item
 			 	-->
-				<f:selectItems value="#{livroBean.autores}" var="autor"
-					itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
-			</h:selectOneMenu>
+					<f:selectItems value="#{livroBean.autores}" var="autor"
+						itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
+				</h:selectOneMenu>
 
 
-			<!-- Método para associar autor ao livro -->
-			<h:commandButton action="#{livroBean.gravarAutor}"
-				value="Gravar Autor">
-				<!-- ao associar um command button com a tag f:ajax, este vai enviar somente
+				<!-- Método para associar autor ao livro -->
+				<h:commandButton action="#{livroBean.gravarAutor}"
+					value="Gravar Autor">
+					<!-- ao associar um command button com a tag f:ajax, este vai enviar somente
 				 uma parte dos dados na requisição, esses dados são definidos com a atributo
 				 execute, onde definimos o componente que tem o dado que vamo enviar, com seu id
 				 fazemos isso -->
-				<!-- com o atributo render, definimos qual componente será atualizado, via id -->
-				<f:ajax execute="autor" render="tabela-autores" />
-			</h:commandButton>
+					<!-- com o atributo render, definimos qual componente será atualizado, via id -->
+					<f:ajax execute="autor" render="tabela-autores" />
+				</h:commandButton>
 
 
-			<!-- Mesmo padrão do selectItems -->
-			<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
-				id="tabela-autores">
-				<h:column>
-					<h:outputText value="#{autor.nome}" />
-				</h:column>
-			</h:dataTable>
-		</fieldset>
+				<!-- Mesmo padrão do selectItems -->
+				<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
+					id="tabela-autores">
+					<h:column>
+						<h:outputText value="#{autor.nome}" />
+					</h:column>
+				</h:dataTable>
+			</fieldset>
 
-		<h:commandButton action="#{livroBean.gravar}" value="Registrar">
-			<!--  com o @form, estamos indicando o envio de todo o form, mas podemos passar uma lista
+			<h:commandButton action="#{livroBean.gravar}" value="Registrar">
+				<!--  com o @form, estamos indicando o envio de todo o form, mas podemos passar uma lista
 		de ids separados por espaço no execute 
 		Além do @form, tem outras possibilidades como 
 		@all , @this, @more -->
-			<f:ajax execute="@form" render=":tabelaDeLivros @form" />
-		</h:commandButton>
-	</h:form>
+				<f:ajax execute="@form" render=":tabelaDeLivros @form" />
+			</h:commandButton>
+		</h:form>
 
-	<h:dataTable id="tabelaDeLivros" value="#{livroBean.livros}"
-		style="width:50%" var="livro">
-		<h:column>
-			<!-- setando o cabeçalho das colunas -->
-			<f:facet name="header">Título</f:facet>
-			<h:outputText value="#{livro.titulo}" />
-		</h:column>
-		<h:column>
-			<f:facet name="header">Isbn</f:facet>
-			<h:outputText value="#{livro.isbn}" />
-		</h:column>
-		<h:column>
-			<f:facet name="header">Preço</f:facet>
-			<h:outputText value="#{livro.preco}">
-				<f:convertNumber type="currency" pattern="R$ #0.00"
-					currencySymbol="R$" locale="pt_BR" />
-			</h:outputText>
-		</h:column>
-		<h:column>
-			<f:facet name="header">Data de lançamento</f:facet>
-			<h:outputText value="#{livro.dataLancamento.time}">
-				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-			</h:outputText>
-		</h:column>
-	</h:dataTable>
-</h:body>
+		<h:dataTable id="tabelaDeLivros" value="#{livroBean.livros}"
+			style="width:50%" var="livro">
+			<h:column>
+				<!-- setando o cabeçalho das colunas -->
+				<f:facet name="header">Título</f:facet>
+				<h:outputText value="#{livro.titulo}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Isbn</f:facet>
+				<h:outputText value="#{livro.isbn}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Preço</f:facet>
+				<h:outputText value="#{livro.preco}">
+					<f:convertNumber type="currency" pattern="R$ #0.00"
+						currencySymbol="R$" locale="pt_BR" />
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Data de lançamento</f:facet>
+				<h:outputText value="#{livro.dataLancamento.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</h:outputText>
+			</h:column>
+		</h:dataTable>
+	</ui:define>
+	<ui:define name="conteudo-rodape">
+		gege oficial real
+	</ui:define>
+</ui:composition>
 </html>
