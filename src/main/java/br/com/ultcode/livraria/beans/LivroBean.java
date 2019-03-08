@@ -46,9 +46,26 @@ public class LivroBean implements Serializable {
 					new FacesMessage("Livro deve ter pelo menos um autor"));
 			return;
 		}
-		new DAO<Livro>(Livro.class).persist(livro);
+
+		if (livro.getId() == null) {
+			new DAO<Livro>(Livro.class).persist(livro);
+		} else {
+			new DAO<Livro>(Livro.class).atualiza(livro);
+		}
 		this.livro = new Livro();
 
+	}
+	
+	public void removeAutorDoLivro(Autor autor) {
+		this.livro.removeAutor(autor);
+	}
+
+	public void alterarLivro(Livro livro) {
+		this.livro = livro;
+	}
+
+	public void removerLivro(Livro livro) {
+		new DAO<Livro>(Livro.class).remove(livro);
 	}
 
 	public void gravarAutor() {

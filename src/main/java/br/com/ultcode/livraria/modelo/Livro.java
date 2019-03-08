@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class Livro implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataLancamento = Calendar.getInstance();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	List<Autor> autor = new ArrayList<>();
 
 	public List<Autor> getAutores() {
@@ -108,6 +109,10 @@ public class Livro implements Serializable {
 		} else if (!isbn.equals(other.isbn))
 			return false;
 		return true;
+	}
+
+	public void removeAutor(Autor autor) {
+		this.autor.remove(autor);
 	}
 
 }

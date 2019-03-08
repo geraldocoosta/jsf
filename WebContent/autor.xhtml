@@ -22,6 +22,26 @@
 				</h:panelGrid>
 			</fieldset>
 		</h:form>
+		<h:form id="formTableAutores">
+			<h:dataTable id="tableAutores" value="#{autorBean.buscaAutores()}"
+				var="autor">
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{autor.nome}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Alterar</f:facet>
+					<h:commandLink action="#{autorBean.alterarAutor(autor)}"
+						value="alterar" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Remover</f:facet>
+					<h:commandLink action="#{autorBean.removerAutor(autor)}"
+						value="remover" />
+				</h:column>
+			</h:dataTable>
+		</h:form>
+
 	</ui:define>
 	<ui:define name="conteudo-rodape">
 		gege oficial
