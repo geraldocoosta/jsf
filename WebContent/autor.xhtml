@@ -8,17 +8,30 @@
 
 	<ui:define name="titulo">Criar Autor</ui:define>
 	<ui:define name="conteudo">
+		<f:metadata>
+			<f:viewParam name="autorId" value="#{autorBean.autorId}" />
+			<f:viewAction action="#{autorBean.carregaAutorPorId()}"
+				if="#{param.autorId != null }" />
+		</f:metadata>
 		<h:form>
 			<fieldset>
 				<legend>Autor</legend>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:outputLabel value="Nome" for="nome" />
 					<h:inputText value="#{autorBean.autor.nome}" id="nome"
-						validatorMessage="Nome deve ter mais de 3 caracteres">
+						required="true">
 						<f:validateLength minimum="3" />
+						<f:ajax event="blur" render="message-nome"/>
 					</h:inputText>
+					<h:message id="message-nome" for="nome" />
+
+					<h:outputLabel value="Email" for="email" />
+					<h:inputText value="#{autorBean.autor.email}" id="email">
+						<f:passThroughAttribute name="type" value="email" />
+					</h:inputText>
+					<h:message for="email" id="message-email" />
+
 					<h:commandButton action="#{autorBean.gravar}" value="Registrar" />
-					<h:message for="nome" />
 				</h:panelGrid>
 			</fieldset>
 		</h:form>

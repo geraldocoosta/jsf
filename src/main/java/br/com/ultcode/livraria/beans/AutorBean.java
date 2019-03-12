@@ -12,32 +12,48 @@ import br.com.ultcode.livraria.modelo.Autor;
 @ViewScoped
 public class AutorBean {
 
-	private Autor autor = new Autor();
+    private Autor autor = new Autor();
+    private Integer autorId;
 
-	public Autor getAutor() {
-		return autor;
-	}
+    public Integer getAutorId() {
+	return autorId;
+    }
 
-	public String gravar() {
-		System.out.println("Registrou");
-		if (autor.getId() == null) {
-			new DAO<>(Autor.class).persist(autor);
-		} else {
-			new DAO<>(Autor.class).atualiza(autor);
-		}
-		this.autor = new Autor();
-		return "livro?faces-redirect=true";
+    public void setAutorId(Integer autorId) {
+	this.autorId = autorId;
+    }
+    
+    public void carregaAutorPorId() {
+	this.autor = new DAO<>(Autor.class).busca(autorId);
+	if(this.autor == null) {
+	    this.autor = new Autor();
 	}
+    }
 
-	public List<Autor> buscaAutores() {
-		return new DAO<Autor>(Autor.class).buscaTodos();
-	}
+    public Autor getAutor() {
+	return autor;
+    }
 
-	public void removerAutor(Autor autor) {
-		new DAO<>(Autor.class).remove(autor);
+    public String gravar() {
+	System.out.println("Registrou");
+	if (autor.getId() == null) {
+	    new DAO<>(Autor.class).persist(autor);
+	} else {
+	    new DAO<>(Autor.class).atualiza(autor);
 	}
+	this.autor = new Autor();
+	return "livro?faces-redirect=true";
+    }
 
-	public void alterarAutor(Autor autor) {
-		this.autor = autor;
-	}
+    public List<Autor> buscaAutores() {
+	return new DAO<Autor>(Autor.class).buscaTodos();
+    }
+
+    public void removerAutor(Autor autor) {
+	new DAO<>(Autor.class).remove(autor);
+    }
+
+    public void alterarAutor(Autor autor) {
+	this.autor = autor;
+    }
 }
