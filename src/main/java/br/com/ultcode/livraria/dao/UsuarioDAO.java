@@ -15,9 +15,18 @@ public class UsuarioDAO {
 				"select u from Usuario u where u.email = :pUserEmail and u.senha = :pUserSenha", Usuario.class);
 		query.setParameter("pUserEmail", usuario.getEmail());
 		query.setParameter("pUserSenha", usuario.getSenha());
-		Usuario user = query.getSingleResult();
-		em.getTransaction().commit();
-		return user;
+		Usuario user;
+		try {
+			user = query.getSingleResult();
+			em.getTransaction().commit();
+			System.out.println(user);
+			return user;
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			return null;
+		}finally {
+			em.close();
+		}
 	}
 
 }

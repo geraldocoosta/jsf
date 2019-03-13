@@ -23,6 +23,7 @@ public class LoginBean {
 
 		Usuario usuario = new UsuarioDAO().confereInformacoes(this.usuario);
 
+		System.out.println(usuario);
 		if (usuario != null) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();

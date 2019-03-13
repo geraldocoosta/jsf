@@ -28,7 +28,8 @@ public class AutorizacaoPhilter implements PhaseListener {
 
 		Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
 		Usuario usuario = (Usuario) sessionMap.get("usuarioLogado");
-
+		System.out.println(usuario);
+		
 		if (usuario != null) {
 			return;
 		}
