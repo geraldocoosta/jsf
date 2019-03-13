@@ -12,6 +12,11 @@
 	<div id="cabecalho">
 		<h:graphicImage name="logo.png" library="img" />
 		<!-- parte de outra página que vá ficar aqui tem que saber essa name -->
+		
+		<h:form rendered="#{usuarioLogado != null}">
+			<h:commandLink action="#{loginBean.deslogar}" value="Logout" />
+		</h:form>
+		
 		<h1><ui:insert name="titulo" /></h1>
 	</div>
 	<div id="conteudo" class="body-content">

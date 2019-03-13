@@ -8,6 +8,11 @@
 <ui:composition template="_template.xhtml">
 	<ui:define name="titulo">Cadastro Livro</ui:define>
 	<ui:define name="conteudo">
+		<f:metadata>
+			<f:viewParam name="livroId" value="#{livroBean.livroId}" />
+			<f:viewAction action="#{livroBean.carregaAutorPorId()}"
+				if="#{param.livroId != null }" />
+		</f:metadata>
 		<h:form>
 			<h:messages id="message-validation" />
 			<fieldset>
@@ -87,7 +92,8 @@
 						<h:outputText value="#{autor.nome}" />
 					</h:column>
 					<h:column>
-						<h:commandLink action="#{livroBean.removeAutorDoLivro(autor)}" value="remove" />
+						<h:commandLink action="#{livroBean.removeAutorDoLivro(autor)}"
+							value="remove" />
 					</h:column>
 				</h:dataTable>
 			</fieldset>

@@ -8,18 +8,26 @@
 
 	<ui:define name="titulo">Login</ui:define>
 	<ui:define name="conteudo">
-		<h:form>
+
+		<h:messages globalOnly="true" />
+
+		<h:form id="login">
 			<fieldset>
 				<legend>Dados do Usuario</legend>
 
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3">
 					<h:outputLabel value="Email" for="email" />
-					<h:inputText value="#{loginBean.usuario.email}" id="email">
+					<h:inputText value="#{loginBean.usuario.email}" id="email"
+						required="true">
 						<f:passThroughAttribute name="type" value="email" />
 					</h:inputText>
+					<h:message for="email" />
 
 					<h:outputLabel value="Senha" for="senha" />
-					<h:inputSecret value="#{loginBean.usuario.senha}"  id="senha" />
+					<h:inputSecret value="#{loginBean.usuario.senha}" id="senha"
+						required="true">
+					</h:inputSecret>
+					<h:message for="senha" />
 
 					<h:commandButton action="#{loginBean.logando()}" value="Logar" />
 				</h:panelGrid>
