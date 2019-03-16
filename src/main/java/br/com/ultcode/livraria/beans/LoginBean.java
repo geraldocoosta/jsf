@@ -14,34 +14,34 @@ import br.com.ultcode.livraria.modelo.Usuario;
 @ViewScoped
 public class LoginBean {
 
-    Usuario usuario = new Usuario();
+	Usuario usuario = new Usuario();
 
-    public Usuario getUsuario() {
-	return usuario;
-    }
-
-    public String logando() {
-
-	Usuario usuario = new UsuarioDAO().confereInformacoes(this.usuario);
-	FacesContext context = FacesContext.getCurrentInstance();
-
-	System.out.println(usuario);
-	if (usuario != null) {
-	    Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-	    sessionMap.put("usuarioLogado", usuario);
-	    return "livro?faces-redirect=true";
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	context.getExternalContext().getFlash().setKeepMessages(true);
-	context.addMessage(null, new FacesMessage("Usuario não encontrado"));
+	public String logando() {
 
-	return "login?faces-redirect=true";
-    }
+		Usuario usuario = new UsuarioDAO().confereInformacoes(this.usuario);
+		FacesContext context = FacesContext.getCurrentInstance();
 
-    public String deslogar() {
-	FacesContext context = FacesContext.getCurrentInstance();
-	context.getExternalContext().getSessionMap().remove("usuarioLogado");
-	usuario = new Usuario();
-	return "login?faces-redirect=true";
-    }
+		System.out.println(usuario);
+		if (usuario != null) {
+			Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+			sessionMap.put("usuarioLogado", usuario);
+			return "livro?faces-redirect=true";
+		}
+
+		context.getExternalContext().getFlash().setKeepMessages(true);
+		context.addMessage(null, new FacesMessage("Usuario não encontrado"));
+
+		return "login?faces-redirect=true";
+	}
+
+	public String deslogar() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().getSessionMap().remove("usuarioLogado");
+		usuario = new Usuario();
+		return "login?faces-redirect=true";
+	}
 }
