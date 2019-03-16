@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head >
 	<h:outputStylesheet library="css" name="stylo.css"/>
@@ -17,7 +18,7 @@
 			<h:commandLink action="#{loginBean.deslogar}" value="Logout" />
 		</h:form>
 		
-		<h1><ui:insert name="titulo" /></h1>
+		<h1><p:outputPanel><ui:insert name="titulo" /></p:outputPanel></h1>
 	</div>
 	<div id="conteudo" class="body-content">
 		<ui:insert name="conteudo" />

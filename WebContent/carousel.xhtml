@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<!--  compondo esse conteudo no layout definido no template -->
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">Carousel Livros</ui:define>
+	<ui:define name="conteudo">
+
+		<h:form>
+			<p:carousel value="#{livroBean.livros}" headerText="Livros"
+				var="livro" responsive="true" itemStyle="text-align:center" style="">
+				<p:panelGrid columns="2" style="width:100%;margin:10px 0px"
+					columnClasses="label,value" layout="grid"
+					styleClass="ui-panelgrid-blank">
+
+					<f:facet name="header"> #{livro.titulo}</f:facet>
+
+					<h:outputText value="ISBN" />
+					<h:outputText value="#{livro.isbn}" />
+				</p:panelGrid>
+			</p:carousel>
+		</h:form>
+
+	</ui:define>
+	<ui:define name="conteudo-rodape">
+		gege oficial real
+	</ui:define>
+</ui:composition>
+</html>
