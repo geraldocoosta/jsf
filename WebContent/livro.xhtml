@@ -14,7 +14,7 @@
 			<f:viewAction action="#{livroBean.carregaAutorPorId()}"
 				if="#{param.livroId != null }" />
 		</f:metadata>
-		<h:form>
+		<h:form id="form-livro">
 			<p:messages id="message-validation" />
 			<p:fieldset legend="Dados do livro">
 				<h:panelGrid columns="2">
@@ -130,12 +130,12 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">Alteração</f:facet>
-					<h:commandLink action="#{livroBean.alterarLivro(livro)}"
+					<p:commandLink action="#{livroBean.alterarLivro(livro)}" update=":form-livro"
 						value="alterar" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">Remover</f:facet>
-					<h:commandLink action="#{livroBean.removerLivro(livro)}"
+					<p:commandLink action="#{livroBean.removerLivro(livro)}" update="@form"
 						value="remover" />
 				</p:column>
 			</p:dataTable>

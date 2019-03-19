@@ -59,11 +59,13 @@ public class LivroBean implements Serializable {
 
 	if (livro.getId() == null) {
 	    new DAO<Livro>(Livro.class).persist(livro);
+	    
 	} else {
 	    new DAO<Livro>(Livro.class).atualiza(livro);
 	}
+	buscarLivros();
 	this.livro = new Livro();
-
+	
     }
 
     public void removeAutorDoLivro(Autor autor) {
@@ -72,10 +74,12 @@ public class LivroBean implements Serializable {
 
     public void alterarLivro(Livro livro) {
 	this.livro = livro;
+	buscarLivros();
     }
 
     public void removerLivro(Livro livro) {
 	new DAO<Livro>(Livro.class).remove(livro);
+	buscarLivros();
     }
 
     public void gravarAutor() {
@@ -93,9 +97,13 @@ public class LivroBean implements Serializable {
 
     public List<Livro> getLivros() {
 	if (livros == null) {
-	    livros = new DAO<Livro>(Livro.class).buscaTodos();
+	    buscarLivros();
 	}
 	return livros;
+    }
+
+    private void buscarLivros() {
+	livros = new DAO<Livro>(Livro.class).buscaTodos();
     }
 
     /*
