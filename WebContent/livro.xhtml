@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:h="http://xmlns.jcp.org/jsf/html">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
 <!--  compondo esse conteudo no layout definido no template -->
 <ui:composition template="_template.xhtml">
@@ -14,13 +15,12 @@
 				if="#{param.livroId != null }" />
 		</f:metadata>
 		<h:form>
-			<h:messages id="message-validation" />
-			<fieldset>
-				<legend>Dados do livro</legend>
+			<p:messages id="message-validation" />
+			<p:fieldset legend="Dados do livro">
 				<h:panelGrid columns="2">
 
-					<h:outputLabel value="Titulo" for="titulo" />
-					<h:inputText value="#{livroBean.livro.titulo}" id="titulo"
+					<p:outputLabel value="Titulo" for="titulo" />
+					<p:inputText value="#{livroBean.livro.titulo}" id="titulo"
 						required="true" requiredMessage="Titulo obrigatorio"
 						validatorMessage="Titulo não pode ser superior a 40 caracteres">
 						<!-- Definindo a quantidade maxima de caracteres com um validador jsf,
@@ -32,80 +32,72 @@
 						<!-- f:ajax dentro de um input, diz que esse dado vai ser envido via ajax
 					 Aqui podemos usar o atributo event para indicar quando vamos enviar esse
 					 dado -->
-					</h:inputText>
-					<h:outputLabel value="Isbn:" for="isbn" />
-					<h:inputText value="#{livroBean.livro.isbn}" id="isbn"
-						validator="#{livroBean.comecaComDigitoUm}">
+					</p:inputText>
+
+					<p:outputLabel value="Isbn:" for="isbn" />
+					<p:inputMask value="#{livroBean.livro.isbn}" id="isbn"
+						validator="#{livroBean.comecaComDigitoUm}"
+						mask="999-9-99-999999-9">
 						<f:ajax render="message-validation" event="keyup" />
-					</h:inputText>
-					<h:outputLabel value="Preco:" for="preco" />
-					<h:inputText value="#{livroBean.livro.preco}" id="preco">
-						<f:validateDoubleRange maximum="1000.0" minimum="10.0" />
-					</h:inputText>
-					<h:outputLabel value="Data de Lançamento:" for="dataLancamento" />
-					<h:inputText value="#{livroBean.livro.dataLancamento.time}"
-						id="dataLancamento">
-						<!-- isso é um converter para data -->
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-					</h:inputText>
+					</p:inputMask>
+
+					<p:outputLabel value="Preco:" for="preco" />
+					<p:inputNumber value="#{livroBean.livro.preco}" id="preco"
+						symbol="R$ " decimalPlaces="2" decimalSeparator="," />
+
+					<p:outputLabel value="Data de Lançamento:" for="dataLancamento" />
+					<p:calendar id="dataLancamento"
+						value="#{livroBean.livro.dataLancamento.time}"
+						pattern="dd/MM/yyyy" mask="true" timezone="GMT-3" />
 				</h:panelGrid>
-			</fieldset>
+			</p:fieldset>
 
 			<!--  na action, usamos o nome da página que queremos acessar -->
 			<!--  o atributo immediate fará com que o método formAutor() seja executado 
 		durante a segunda fase APPLY_REQUEST_VALUES, antes da validação -->
-			<h:commandLink action="#{livroBean.formAutor}"
-				value="Cadastrar novo autor" immediate="true" />
-			<fieldset>
-				<legend>Dados do Autor</legend>
-				<h:outputLabel value="Selecione Autor" for="autor" />
 
-				<!-- Pega o itemValue selecionado e popula no nosso ManagedBean -->
-				<h:selectOneMenu id="autor" value="#{livroBean.autorId}">
-					<!-- 
+			<p:fieldset legend="Dados do Autor">
+
+				<p:panelGrid columns="4">
+					<p:outputLabel value="Selecione Autor" for="autor" />
+
+					<!-- Pega o itemValue selecionado e popula no nosso ManagedBean -->
+					<p:selectOneMenu id="autor" value="#{livroBean.autorId}">
+						<!-- 
 				value ~> lista de autores
 				var ~> indica um autor dentro da iteração pela lista de autores
 				itemLabel ~> o que vamos mostrar do autor
 				itemValue ~> associar um valor ao item
 			 	-->
-					<f:selectItems value="#{livroBean.autores}" var="autor"
-						itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
-				</h:selectOneMenu>
+						<f:selectItems value="#{livroBean.autores}" var="autor"
+							itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
+					</p:selectOneMenu>
 
 
-				<!-- Método para associar autor ao livro -->
-				<h:commandButton action="#{livroBean.gravarAutor}"
-					value="Gravar Autor">
-					<!-- ao associar um command button com a tag f:ajax, este vai enviar somente
-				 uma parte dos dados na requisição, esses dados são definidos com a atributo
-				 execute, onde definimos o componente que tem o dado que vamo enviar, com seu id
-				 fazemos isso -->
-					<!-- com o atributo render, definimos qual componente será atualizado, via id -->
-					<f:ajax execute="autor" render="tabela-autores" />
-				</h:commandButton>
+					<!-- Método para associar autor ao livro -->
+					<p:commandButton action="#{livroBean.gravarAutor}"
+						value="Gravar Autor" process="@this autor" update="tabela-autores" />
 
+					<p:commandLink action="#{livroBean.formAutor}"
+						value="ou cadastre um autor" immediate="true" />
+
+				</p:panelGrid>
 
 				<!-- Mesmo padrão do selectItems -->
-				<h:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
-					id="tabela-autores">
-					<h:column>
+				<p:dataTable value="#{livroBean.autoresDoLivro}" var="autor" style=""
+					id="tabela-autores" emptyMessage="Nenhum autor">
+					<p:column>
 						<h:outputText value="#{autor.nome}" />
-					</h:column>
-					<h:column>
+					</p:column>
+					<p:column>
 						<h:commandLink action="#{livroBean.removeAutorDoLivro(autor)}"
 							value="remove" />
-					</h:column>
-				</h:dataTable>
-			</fieldset>
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
 
-			<h:commandButton action="#{livroBean.gravar}" value="Registrar">
-				<!--  com o @form, estamos indicando o envio de todo o form, mas podemos passar uma lista
-		de ids separados por espaço no execute 
-		Além do @form, tem outras possibilidades como 
-		@all , @this, @more -->
-				<f:ajax execute="@form"
-					render=":formTabelaDeLivros:tabelaDeLivros @form" />
-			</h:commandButton>
+			<p:commandButton action="#{livroBean.gravar}" value="Registrar"
+				process="@form" update=":formTabelaDeLivros:tabelaDeLivros @form" />
 		</h:form>
 
 		<h:form id="formTabelaDeLivros">
