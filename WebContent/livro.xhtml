@@ -47,8 +47,8 @@
 
 					<p:outputLabel value="Data de Lançamento:" for="dataLancamento" />
 					<p:calendar id="dataLancamento"
-						value="#{livroBean.livro.dataLancamento.time}"
-						pattern="dd/MM/yyyy" mask="true" timezone="GMT-3" />
+						value="#{livroBean.livro.dataLancamento.time}" timezone="America/Sao_Paulo"
+						pattern="dd/MM/yyyy" mask="true" />
 				</h:panelGrid>
 			</p:fieldset>
 
@@ -125,7 +125,7 @@
 				<p:column>
 					<f:facet name="header">Data de lançamento</f:facet>
 					<h:outputText value="#{livro.dataLancamento.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						<f:convertDateTime pattern="dd/MM/yyyy" timezone="GMT-3" />
 					</h:outputText>
 				</p:column>
 				<p:column>

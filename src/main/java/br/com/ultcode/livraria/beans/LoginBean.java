@@ -14,6 +14,7 @@ import br.com.ultcode.livraria.modelo.Usuario;
 @ViewScoped
 public class LoginBean {
 
+	private static final String PAGES_LOGIN_REDIRECT = "login?faces-redirect=true";
 	Usuario usuario = new Usuario();
 
 	public Usuario getUsuario() {
@@ -35,13 +36,13 @@ public class LoginBean {
 		context.getExternalContext().getFlash().setKeepMessages(true);
 		context.addMessage(null, new FacesMessage("Usuario não encontrado"));
 
-		return "login?faces-redirect=true";
+		return PAGES_LOGIN_REDIRECT;
 	}
 
 	public String deslogar() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().getSessionMap().remove("usuarioLogado");
 		usuario = new Usuario();
-		return "login?faces-redirect=true";
+		return PAGES_LOGIN_REDIRECT;
 	}
 }
