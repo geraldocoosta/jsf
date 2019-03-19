@@ -22,6 +22,7 @@ public class LivroBean implements Serializable {
     private Livro livro = new Livro();
     private Integer autorId;
     private Integer livroId;
+    private List<Livro> livros;
 
     public Integer getLivroId() {
 	return livroId;
@@ -91,7 +92,10 @@ public class LivroBean implements Serializable {
     }
 
     public List<Livro> getLivros() {
-	return new DAO<Livro>(Livro.class).buscaTodos();
+	if (livros == null) {
+	    livros = new DAO<Livro>(Livro.class).buscaTodos();
+	}
+	return livros;
     }
 
     /*

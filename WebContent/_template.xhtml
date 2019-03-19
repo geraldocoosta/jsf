@@ -3,28 +3,33 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head >
-	<h:outputStylesheet library="css" name="stylo.css"/>
+<h:head>
+	<h:outputStylesheet library="css" name="stylo.css" />
 </h:head>
 <h:body>
 
 	<div id="cabecalho">
 		<h:graphicImage name="logo.png" library="img" />
 		<!-- parte de outra página que vá ficar aqui tem que saber essa name -->
-		
+
 		<h:form rendered="#{usuarioLogado != null}">
 			<h:commandLink action="#{loginBean.deslogar}" value="Logout" />
 		</h:form>
-		
-		<h1><p:outputPanel><ui:insert name="titulo" /></p:outputPanel></h1>
+
+		<h1>
+			<p:outputPanel>
+				<ui:insert name="titulo" />
+			</p:outputPanel>
+		</h1>
 	</div>
 	<div id="conteudo" class="body-content">
 		<ui:insert name="conteudo" />
 	</div>
 	<div id="rodape" class="fixar-rodape">
-		copyright 2012 - <ui:insert name="conteudo-rodape"/>
+		copyright 2012 -
+		<ui:insert name="conteudo-rodape" />
 	</div>
 
 </h:body>

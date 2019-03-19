@@ -84,8 +84,8 @@
 				</p:panelGrid>
 
 				<!-- Mesmo padrão do selectItems -->
-				<p:dataTable value="#{livroBean.autoresDoLivro}" var="autor" style=""
-					id="tabela-autores" emptyMessage="Nenhum autor">
+				<p:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
+					id="tabela-autores" style="width:50%" emptyMessage="Nenhum autor">
 					<p:column>
 						<h:outputText value="#{autor.nome}" />
 					</p:column>
@@ -101,41 +101,44 @@
 		</h:form>
 
 		<h:form id="formTabelaDeLivros">
-			<h:dataTable id="tabelaDeLivros" value="#{livroBean.livros}"
-				style="width:50%" var="livro">
-				<h:column>
+			<p:dataTable id="tabelaDeLivros" value="#{livroBean.livros}"
+				style="width:80%" var="livro" rows="5" paginator="true">
+
+				<f:facet name="header">Livros</f:facet>
+
+				<p:column headerText="Titulo" sortBy="#{livro.titulo}"
+					filterBy="#{livro.titulo}" filterMatchMode="startsWith">
 					<!-- setando o cabeçalho das colunas -->
-					<f:facet name="header">Título</f:facet>
 					<h:outputText value="#{livro.titulo}" />
-				</h:column>
-				<h:column>
+				</p:column>
+				<p:column sortBy="#{livro.isbn}">
 					<f:facet name="header">Isbn</f:facet>
 					<h:outputText value="#{livro.isbn}" />
-				</h:column>
-				<h:column>
+				</p:column>
+				<p:column>
 					<f:facet name="header">Preço</f:facet>
 					<h:outputText value="#{livro.preco}">
 						<f:convertNumber type="currency" pattern="R$ #0.00"
 							currencySymbol="R$" locale="pt_BR" />
 					</h:outputText>
-				</h:column>
-				<h:column>
+				</p:column>
+				<p:column>
 					<f:facet name="header">Data de lançamento</f:facet>
 					<h:outputText value="#{livro.dataLancamento.time}">
 						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 					</h:outputText>
-				</h:column>
-				<h:column>
-					<f:facet name="header">Alteraçõa</f:facet>
+				</p:column>
+				<p:column>
+					<f:facet name="header">Alteração</f:facet>
 					<h:commandLink action="#{livroBean.alterarLivro(livro)}"
 						value="alterar" />
-				</h:column>
-				<h:column>
+				</p:column>
+				<p:column>
 					<f:facet name="header">Remover</f:facet>
 					<h:commandLink action="#{livroBean.removerLivro(livro)}"
 						value="remover" />
-				</h:column>
-			</h:dataTable>
+				</p:column>
+			</p:dataTable>
 		</h:form>
 	</ui:define>
 	<ui:define name="conteudo-rodape">
