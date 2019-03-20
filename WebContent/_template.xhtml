@@ -5,17 +5,35 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<h:outputStylesheet library="css" name="stylo.css" />
-</h:head>
+<h:head />
 <h:body>
 
 	<div id="cabecalho">
-		<h:graphicImage name="logo.png" library="img" />
-		<!-- parte de outra página que vá ficar aqui tem que saber essa name -->
+		<h:panelGrid columns="2">
+			<h:graphicImage name="logo.png" library="img" />
+			<h:form rendered="#{usuarioLogado != null}"
+				style="position:absolute; right:10px;">
+				<p:themeSwitcher id="basic" style="width:165px" value="#{themeBean.theme}">
+					<f:selectItem itemLabel="Escolha um tema" itemValue="" />
+					<f:selectItems value="#{themeBean.temas}" var="theme"
+						itemLabel="#{theme}" itemValue="#{theme}" />
+					<f:ajax />
+				</p:themeSwitcher>
+			</h:form>
+		</h:panelGrid>
 
 		<h:form rendered="#{usuarioLogado != null}">
-			<h:commandLink action="#{loginBean.deslogar}" value="Logout" />
+			<p:growl id="messages" showDetail="true" autoUpdate="true" />
+
+			<p:menuButton value="Options">
+				<p:menuitem value="Autor" action="autor" icon="pi pi-save"
+					ajax="false" />
+				<p:menuitem value="Livros" action="livro" ajax="false"
+					icon="pi pi-times" />
+				<p:separator />
+				<p:menuitem value="Logout" action="#{loginBean.deslogar}"
+					icon="pi pi-home" />
+			</p:menuButton>
 		</h:form>
 
 		<h1>
