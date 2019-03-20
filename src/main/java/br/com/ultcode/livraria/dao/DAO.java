@@ -104,7 +104,7 @@ public class DAO<T> {
 	    System.out.println("Não foi um numero que foi inserido");
 	}
 
-	if (titulo != null) {
+	if (titulo != null && !titulo.isEmpty()) {
 	    query = query.where(criteriaBuilder.like(root.<String>get("titulo"), titulo + "%"));
 	}
 
