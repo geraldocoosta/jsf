@@ -2,6 +2,7 @@ package br.com.ultcode.livraria.beans;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +14,7 @@ import javax.faces.validator.ValidatorException;
 import br.com.ultcode.livraria.dao.DAO;
 import br.com.ultcode.livraria.modelo.Autor;
 import br.com.ultcode.livraria.modelo.Livro;
+import br.com.ultcode.livraria.modelo.LivroDataModel;
 
 @ManagedBean
 @ViewScoped
@@ -23,6 +25,15 @@ public class LivroBean implements Serializable {
     private Integer autorId;
     private Integer livroId;
     private List<Livro> livros;
+    private LivroDataModel model = new LivroDataModel();
+
+    public LivroDataModel getModel() {
+	return model;
+    }
+
+    public void setModel(LivroDataModel model) {
+	this.model = model;
+    }
 
     public Integer getLivroId() {
 	return livroId;
@@ -59,13 +70,13 @@ public class LivroBean implements Serializable {
 
 	if (livro.getId() == null) {
 	    new DAO<Livro>(Livro.class).persist(livro);
-	    
+
 	} else {
 	    new DAO<Livro>(Livro.class).atualiza(livro);
 	}
 	buscarLivros();
 	this.livro = new Livro();
-	
+
     }
 
     public void removeAutorDoLivro(Autor autor) {
@@ -84,7 +95,9 @@ public class LivroBean implements Serializable {
 
     public void gravarAutor() {
 	Autor autor = new DAO<Autor>(Autor.class).busca(autorId);
-	livro.adicionaAutor(autor);
+	if (!livro.temAutor(autor)) {
+	    livro.adicionaAutor(autor);
+	}
     }
 
     public List<Autor> getAutores() {
@@ -142,6 +155,27 @@ public class LivroBean implements Serializable {
 	this.livro = new DAO<Livro>(Livro.class).busca(livroId);
 	if (livro == null) {
 	    this.livro = new Livro();
+	}
+    }
+
+    public boolean precoMenor(Object valorColuna, Object filtroDigitado, Locale locale) {
+	String textoDigitado = (filtroDigitado == null) ? null : filtroDigitado.toString().trim();
+
+	if (textoDigitado == null || textoDigitado.equals("")) {
+	    return true;
+	}
+
+	if (valorColuna == null) {
+	    return false;
+	}
+
+	try {
+	    Double precoDigitado = Double.valueOf(textoDigitado);
+	    Double precoColuna = (Double) valorColuna;
+
+	    return precoColuna.compareTo(precoDigitado) < 0;
+	} catch (NumberFormatException e) {
+	    return false;
 	}
     }
 

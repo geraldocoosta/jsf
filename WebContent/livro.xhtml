@@ -14,95 +14,99 @@
 			<f:viewAction action="#{livroBean.carregaAutorPorId()}"
 				if="#{param.livroId != null }" />
 		</f:metadata>
-		<h:form id="form-livro">
-			<p:messages id="message-validation" />
-			<p:fieldset legend="Dados do livro">
-				<h:panelGrid columns="2">
 
-					<p:outputLabel value="Titulo" for="titulo" />
-					<p:inputText value="#{livroBean.livro.titulo}" id="titulo"
-						required="true" requiredMessage="Titulo obrigatorio"
-						validatorMessage="Titulo não pode ser superior a 40 caracteres">
-						<!-- Definindo a quantidade maxima de caracteres com um validador jsf,
+		<h:panelGrid columns="1">
+			<h:form id="form-livro">
+				<p:messages id="message-validation" />
+				<p:fieldset legend="Dados do livro">
+					<h:panelGrid columns="2">
+
+						<p:outputLabel value="Titulo" for="titulo" />
+						<p:inputText value="#{livroBean.livro.titulo}" id="titulo"
+							required="true" requiredMessage="Titulo obrigatorio"
+							validatorMessage="Titulo não pode ser superior a 40 caracteres">
+							<!-- Definindo a quantidade maxima de caracteres com um validador jsf,
 					 para mudar a mensagem, devemos usar outra atributo, validator message -->
-						<!-- validatorMessage ~> mensagem para validar mensagem
+							<!-- validatorMessage ~> mensagem para validar mensagem
 					 	  requiredMessage  ~> Mensagem para validar um validate do jsf -->
-						<f:validateLength maximum="40" />
-						<f:ajax event="blur" render="message-validation" />
-						<!-- f:ajax dentro de um input, diz que esse dado vai ser envido via ajax
+							<f:validateLength maximum="40" />
+							<f:ajax event="blur" render="message-validation" />
+							<!-- f:ajax dentro de um input, diz que esse dado vai ser envido via ajax
 					 Aqui podemos usar o atributo event para indicar quando vamos enviar esse
 					 dado -->
-					</p:inputText>
+						</p:inputText>
 
-					<p:outputLabel value="Isbn:" for="isbn" />
-					<p:inputMask value="#{livroBean.livro.isbn}" id="isbn"
-						validator="#{livroBean.comecaComDigitoUm}"
-						mask="999-9-99-999999-9">
-						<f:ajax render="message-validation" event="keyup" />
-					</p:inputMask>
+						<p:outputLabel value="Isbn:" for="isbn" />
+						<p:inputMask value="#{livroBean.livro.isbn}" id="isbn"
+							validator="#{livroBean.comecaComDigitoUm}"
+							mask="999-9-99-999999-9">
+							<f:ajax render="message-validation" event="keyup" />
+						</p:inputMask>
 
-					<p:outputLabel value="Preco:" for="preco" />
-					<p:inputNumber value="#{livroBean.livro.preco}" id="preco"
-						symbol="R$ " decimalPlaces="2" decimalSeparator="," />
+						<p:outputLabel value="Preco:" for="preco" />
+						<p:inputNumber value="#{livroBean.livro.preco}" id="preco"
+							symbol="R$ " decimalPlaces="2" decimalSeparator="," />
 
-					<p:outputLabel value="Data de Lançamento:" for="dataLancamento" />
-					<p:calendar id="dataLancamento"
-						value="#{livroBean.livro.dataLancamento.time}" timezone="America/Sao_Paulo"
-						pattern="dd/MM/yyyy" mask="true" />
-				</h:panelGrid>
-			</p:fieldset>
+						<p:outputLabel value="Data de Lançamento:" for="dataLancamento" />
+						<p:calendar id="dataLancamento"
+							value="#{livroBean.livro.dataLancamento.time}"
+							timezone="America/Sao_Paulo" pattern="dd/MM/yyyy" mask="true" />
+					</h:panelGrid>
+				</p:fieldset>
 
-			<!--  na action, usamos o nome da página que queremos acessar -->
-			<!--  o atributo immediate fará com que o método formAutor() seja executado 
+				<!--  na action, usamos o nome da página que queremos acessar -->
+				<!--  o atributo immediate fará com que o método formAutor() seja executado 
 		durante a segunda fase APPLY_REQUEST_VALUES, antes da validação -->
 
-			<p:fieldset legend="Dados do Autor">
+				<p:fieldset legend="Dados do Autor">
 
-				<p:panelGrid columns="4">
-					<p:outputLabel value="Selecione Autor" for="autor" />
+					<p:panelGrid columns="4">
+						<p:outputLabel value="Selecione Autor" for="autor" />
 
-					<!-- Pega o itemValue selecionado e popula no nosso ManagedBean -->
-					<p:selectOneMenu id="autor" value="#{livroBean.autorId}">
-						<!-- 
+						<!-- Pega o itemValue selecionado e popula no nosso ManagedBean -->
+						<p:selectOneMenu id="autor" value="#{livroBean.autorId}">
+							<!-- 
 				value ~> lista de autores
 				var ~> indica um autor dentro da iteração pela lista de autores
 				itemLabel ~> o que vamos mostrar do autor
 				itemValue ~> associar um valor ao item
 			 	-->
-						<f:selectItems value="#{livroBean.autores}" var="autor"
-							itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
-					</p:selectOneMenu>
+							<f:selectItems value="#{livroBean.autores}" var="autor"
+								itemLabel="#{autor.nome}" itemValue="#{autor.id}" />
+						</p:selectOneMenu>
 
 
-					<!-- Método para associar autor ao livro -->
-					<p:commandButton action="#{livroBean.gravarAutor}"
-						value="Gravar Autor" process="@this autor" update="tabela-autores" />
+						<!-- Método para associar autor ao livro -->
+						<p:commandButton action="#{livroBean.gravarAutor}"
+							value="Gravar Autor" process="@this autor"
+							update="tabela-autores" />
 
-					<p:commandLink action="#{livroBean.formAutor}"
-						value="ou cadastre um autor" immediate="true" />
+						<p:commandLink action="#{livroBean.formAutor}"
+							value="ou cadastre um autor" immediate="true" />
 
-				</p:panelGrid>
+					</p:panelGrid>
 
-				<!-- Mesmo padrão do selectItems -->
-				<p:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
-					id="tabela-autores" style="width:50%" emptyMessage="Nenhum autor">
-					<p:column>
-						<h:outputText value="#{autor.nome}" />
-					</p:column>
-					<p:column>
-						<h:commandLink action="#{livroBean.removeAutorDoLivro(autor)}"
-							value="remove" />
-					</p:column>
-				</p:dataTable>
-			</p:fieldset>
+					<!-- Mesmo padrão do selectItems -->
+					<p:dataTable value="#{livroBean.autoresDoLivro}" var="autor"
+						id="tabela-autores" style="width:50%" emptyMessage="Nenhum autor">
+						<p:column>
+							<h:outputText value="#{autor.nome}" />
+						</p:column>
+						<p:column>
+							<p:commandLink action="#{livroBean.removeAutorDoLivro(autor)}"
+								value="remove" update="@form" process="@this" />
+						</p:column>
+					</p:dataTable>
+				</p:fieldset>
 
-			<p:commandButton action="#{livroBean.gravar}" value="Registrar"
-				process="@form" update=":formTabelaDeLivros:tabelaDeLivros @form" />
-		</h:form>
+				<p:commandButton action="#{livroBean.gravar}" value="Registrar"
+					process="@form" update=":formTabelaDeLivros:tabelaDeLivros @form" />
+			</h:form>
+		</h:panelGrid>
 
 		<h:form id="formTabelaDeLivros">
-			<p:dataTable id="tabelaDeLivros" value="#{livroBean.livros}"
-				style="width:80%" var="livro" rows="5" paginator="true">
+			<p:dataTable id="tabelaDeLivros" value="#{livroBean.model}"
+				style="width:80%" var="livro" rows="5" paginator="true" lazy="true">
 
 				<f:facet name="header">Livros</f:facet>
 
@@ -115,7 +119,7 @@
 					<f:facet name="header">Isbn</f:facet>
 					<h:outputText value="#{livro.isbn}" />
 				</p:column>
-				<p:column>
+				<p:column filterBy="#{livro.preco}" filterFunction="#{livroBean.precoMenor}">
 					<f:facet name="header">Preço</f:facet>
 					<h:outputText value="#{livro.preco}">
 						<f:convertNumber type="currency" pattern="R$ #0.00"
@@ -130,13 +134,13 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">Alteração</f:facet>
-					<p:commandLink action="#{livroBean.alterarLivro(livro)}" update=":form-livro"
-						value="alterar" />
+					<p:commandLink action="#{livroBean.alterarLivro(livro)}"
+						update=":form-livro" value="alterar" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">Remover</f:facet>
-					<p:commandLink action="#{livroBean.removerLivro(livro)}" update="@form"
-						value="remover" />
+					<p:commandLink action="#{livroBean.removerLivro(livro)}"
+						update="@form" value="remover" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
