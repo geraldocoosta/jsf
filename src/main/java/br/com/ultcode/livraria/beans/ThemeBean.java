@@ -1,12 +1,15 @@
 package br.com.ultcode.livraria.beans;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import java.io.Serializable;
 
-@ManagedBean
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+@Named
 @SessionScoped
-public class ThemeBean {
+public class ThemeBean implements Serializable {
 
+    private static final long serialVersionUID = 9115715001278793106L;
     private String theme = "aristo";
 
     public String getTheme() {
