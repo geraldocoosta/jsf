@@ -13,7 +13,8 @@
 			<h:graphicImage name="logo.png" library="img" />
 			<h:form rendered="#{usuarioLogado != null}"
 				style="position:absolute; right:10px;">
-				<p:themeSwitcher id="basic" style="width:165px" value="#{themeBean.theme}">
+				<p:themeSwitcher id="basic" style="width:165px"
+					value="#{themeBean.theme}">
 					<f:selectItem itemLabel="Escolha um tema" itemValue="" />
 					<f:selectItems value="#{themeBean.temas}" var="theme"
 						itemLabel="#{theme}" itemValue="#{theme}" />
@@ -25,14 +26,18 @@
 		<h:form rendered="#{usuarioLogado != null}">
 			<p:growl id="messages" showDetail="true" autoUpdate="true" />
 
-			<p:menuButton value="Options">
-				<p:menuitem value="Autor" action="autor" icon="pi pi-save"
-					ajax="false" />
-				<p:menuitem value="Livros" action="livro" ajax="false"
-					icon="pi pi-times" />
+			<p:menuButton value="Menu">
+				<p:menuitem value="Autor" action="autor?faces-redirect=true"
+					ajax="false" icon="fa fa-fw fa-edit" />
+				<p:menuitem value="Livros" action="livro?faces-redirect=true"
+					ajax="false" icon="fa fa-fw fa-edit" />
+				<p:menuitem value="Carousel" action="carousel?faces-redirect=true"
+					ajax="false" icon="fa fa-fw fa-edit" />
+				<p:menuitem value="Vendas" action="vendas?faces-redirect=true"
+					ajax="false" icon="fa fa-fw fa-edit" />
 				<p:separator />
 				<p:menuitem value="Logout" action="#{loginBean.deslogar}"
-					icon="pi pi-home" />
+					icon="fa fa-fw fa-sign-out" />
 			</p:menuButton>
 		</h:form>
 
