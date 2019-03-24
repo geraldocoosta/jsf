@@ -5,15 +5,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.ultcode.livraria.modelo.Autor;
 import br.com.ultcode.livraria.modelo.Livro;
 
 public class TesteJPA {
+
+	@Inject
+	static EntityManager em;
+	
 	public static void main(String[] args) {
 
-		EntityManager em = JPAUtil.getEntityManager();
+		
 
 		em.getTransaction().begin();
 

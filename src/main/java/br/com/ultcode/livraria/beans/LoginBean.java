@@ -4,47 +4,51 @@ import java.io.Serializable;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-import br.com.ultcode.livraria.dao.UsuarioDAO;
+import br.com.ultcode.livraria.dao.UsuarioDao;
 import br.com.ultcode.livraria.modelo.Usuario;
 
-@ManagedBean
+@Named
 @ViewScoped
 public class LoginBean implements Serializable {
 
-    private static final long serialVersionUID = 2720633990755071733L;
-    private static final String PAGES_LOGIN_REDIRECT = "login?faces-redirect=true";
-    Usuario usuario = new Usuario();
+	private static final long serialVersionUID = 2720633990755071733L;
+	private static final String PAGES_LOGIN_REDIRECT = "login?faces-redirect=true";
+	Usuario usuario = new Usuario();
 
-    public Usuario getUsuario() {
-	return usuario;
-    }
+	@Inject
+	private UsuarioDao usuarioDAO;
 
-    public String logando() {
-
-	Usuario usuario = new UsuarioDAO().confereInformacoes(this.usuario);
-	FacesContext context = FacesContext.getCurrentInstance();
-
-	System.out.println(usuario);
-	if (usuario != null) {
-	    Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-	    sessionMap.put("usuarioLogado", usuario);
-	    return "livro?faces-redirect=true";
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	context.getExternalContext().getFlash().setKeepMessages(true);
-	context.addMessage(null, new FacesMessage("Usuario não encontrado"));
+	public String logando() {
 
-	return PAGES_LOGIN_REDIRECT;
-    }
+		Usuario usuario = usuarioDAO.confereInformacoes(this.usuario);
+		FacesContext context = FacesContext.getCurrentInstance();
 
-    public String deslogar() {
-	FacesContext context = FacesContext.getCurrentInstance();
-	context.getExternalContext().getSessionMap().remove("usuarioLogado");
-	usuario = new Usuario();
-	return PAGES_LOGIN_REDIRECT;
-    }
+		System.out.println(usuario);
+		if (usuario != null) {
+			Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+			sessionMap.put("usuarioLogado", usuario);
+			return "livro?faces-redirect=true";
+		}
+
+		context.getExternalContext().getFlash().setKeepMessages(true);
+		context.addMessage(null, new FacesMessage("Usuario não encontrado"));
+
+		return PAGES_LOGIN_REDIRECT;
+	}
+
+	public String deslogar() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().getSessionMap().remove("usuarioLogado");
+		usuario = new Usuario();
+		return PAGES_LOGIN_REDIRECT;
+	}
 }

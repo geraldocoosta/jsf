@@ -4,17 +4,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import br.com.ultcode.livraria.dao.DAO;
+import br.com.ultcode.livraria.dao.LivroDao;
 
 public class LivroDataModel extends LazyDataModel<Livro> {
 	private static final long serialVersionUID = -4598067527411264871L;
-	private static final DAO<Livro> dao = new DAO<>(Livro.class);
 
-	public LivroDataModel() {
-		super.setRowCount(dao.contaTodos());
+	@Inject
+	private LivroDao dao;
+
+	@PostConstruct
+	private void init() {
+		setRowCount(dao.contaTodos());
 	}
 
 	@Override

@@ -4,58 +4,62 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.ultcode.livraria.dao.DAO;
+import br.com.ultcode.livraria.dao.AutorDao;
 import br.com.ultcode.livraria.modelo.Autor;
 
 @Named
 @ViewScoped
 public class AutorBean implements Serializable {
 
-    private static final long serialVersionUID = -5673614687622426965L;
-    private Autor autor = new Autor();
-    private Integer autorId;
+	private static final long serialVersionUID = -5673614687622426965L;
+	private Autor autor = new Autor();
+	private Integer autorId;
+	
+	@Inject
+	private AutorDao autorDao;
 
-    public Integer getAutorId() {
-	return autorId;
-    }
-
-    public void setAutorId(Integer autorId) {
-	this.autorId = autorId;
-    }
-
-    public void carregaAutorPorId() {
-	this.autor = new DAO<>(Autor.class).busca(autorId);
-	if (this.autor == null) {
-	    this.autor = new Autor();
+	public Integer getAutorId() {
+		return autorId;
 	}
-    }
 
-    public Autor getAutor() {
-	return autor;
-    }
-
-    public String gravar() {
-	System.out.println("Registrou");
-	if (autor.getId() == null) {
-	    new DAO<>(Autor.class).persist(autor);
-	} else {
-	    new DAO<>(Autor.class).atualiza(autor);
+	public void setAutorId(Integer autorId) {
+		this.autorId = autorId;
 	}
-	this.autor = new Autor();
-	return "livro?faces-redirect=true";
-    }
 
-    public List<Autor> buscaAutores() {
-	return new DAO<Autor>(Autor.class).buscaTodos();
-    }
+	public void carregaAutorPorId() {
+		this.autor = autorDao.busca(autorId);
+		if (this.autor == null) {
+			this.autor = new Autor();
+		}
+	}
 
-    public void removerAutor(Autor autor) {
-	new DAO<>(Autor.class).remove(autor);
-    }
+	public Autor getAutor() {
+		return autor;
+	}
 
-    public void alterarAutor(Autor autor) {
-	this.autor = autor;
-    }
+	public String gravar() {
+		System.out.println("Registrou");
+		if (autor.getId() == null) {
+			autorDao.persist(autor);
+		} else {
+			autorDao.atualiza(autor);
+		}
+		this.autor = new Autor();
+		return "livro?faces-redirect=true";
+	}
+
+	public List<Autor> buscaAutores() {
+		return autorDao.buscaTodos();
+	}
+
+	public void removerAutor(Autor autor) {
+		autorDao.remove(autor);
+	}
+
+	public void alterarAutor(Autor autor) {
+		this.autor = autor;
+	}
 }
