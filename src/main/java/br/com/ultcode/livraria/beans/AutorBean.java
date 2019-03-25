@@ -9,57 +9,60 @@ import javax.inject.Named;
 
 import br.com.ultcode.livraria.dao.AutorDao;
 import br.com.ultcode.livraria.modelo.Autor;
+import br.com.ultcode.livraria.util.tx.Transacional;
 
 @Named
 @ViewScoped
 public class AutorBean implements Serializable {
 
-	private static final long serialVersionUID = -5673614687622426965L;
-	private Autor autor = new Autor();
-	private Integer autorId;
-	
-	@Inject
-	private AutorDao autorDao;
+    private static final long serialVersionUID = -5673614687622426965L;
+    private Autor autor = new Autor();
+    private Integer autorId;
 
-	public Integer getAutorId() {
-		return autorId;
-	}
+    @Inject
+    private AutorDao autorDao;
 
-	public void setAutorId(Integer autorId) {
-		this.autorId = autorId;
-	}
+    public Integer getAutorId() {
+	return autorId;
+    }
 
-	public void carregaAutorPorId() {
-		this.autor = autorDao.busca(autorId);
-		if (this.autor == null) {
-			this.autor = new Autor();
-		}
-	}
+    public void setAutorId(Integer autorId) {
+	this.autorId = autorId;
+    }
 
-	public Autor getAutor() {
-		return autor;
+    public void carregaAutorPorId() {
+	this.autor = autorDao.busca(autorId);
+	if (this.autor == null) {
+	    this.autor = new Autor();
 	}
+    }
 
-	public String gravar() {
-		System.out.println("Registrou");
-		if (autor.getId() == null) {
-			autorDao.persist(autor);
-		} else {
-			autorDao.atualiza(autor);
-		}
-		this.autor = new Autor();
-		return "livro?faces-redirect=true";
-	}
+    public Autor getAutor() {
+	return autor;
+    }
 
-	public List<Autor> buscaAutores() {
-		return autorDao.buscaTodos();
+    @Transacional
+    public String gravar() {
+	System.out.println("Registrou");
+	if (autor.getId() == null) {
+	    autorDao.persist(autor);
+	} else {
+	    autorDao.atualiza(autor);
 	}
+	this.autor = new Autor();
+	return "livro?faces-redirect=true";
+    }
 
-	public void removerAutor(Autor autor) {
-		autorDao.remove(autor);
-	}
+    public List<Autor> buscaAutores() {
+	return autorDao.buscaTodos();
+    }
 
-	public void alterarAutor(Autor autor) {
-		this.autor = autor;
-	}
+    @Transacional
+    public void removerAutor(Autor autor) {
+	autorDao.remove(autor);
+    }
+
+    public void alterarAutor(Autor autor) {
+	this.autor = autor;
+    }
 }

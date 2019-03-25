@@ -54,7 +54,6 @@ public class LivroDao implements Serializable {
 	}
 
 	public List<Livro> listaTodosPaginada(int firstResult, int maxResults, Map<String, String> colunaValor) {
-		manager.getTransaction().begin();
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		CriteriaQuery<Livro> query = criteriaBuilder.createQuery(Livro.class);
 		Root<Livro> root = query.from(Livro.class);
@@ -79,7 +78,6 @@ public class LivroDao implements Serializable {
 
 		List<Livro> lista = manager.createQuery(query).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 
-		manager.getTransaction().commit();
 		return lista;
 	}
 
