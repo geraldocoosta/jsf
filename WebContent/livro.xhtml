@@ -38,19 +38,20 @@
 
 						<p:outputLabel value="Isbn:" for="isbn" />
 						<p:inputMask value="#{livroBean.livro.isbn}" id="isbn"
-							validator="#{livroBean.comecaComDigitoUm}"
+							validator="#{livroBean.comecaComDigitoUm}" required="true"
 							mask="999-9-99-999999-9">
 							<f:ajax render="message-validation" event="keyup" />
 						</p:inputMask>
 
 						<p:outputLabel value="Preco:" for="preco" />
 						<p:inputNumber value="#{livroBean.livro.preco}" id="preco"
-							symbol="R$ " decimalPlaces="2" decimalSeparator="," />
+							symbol="R$ " decimalPlaces="2" decimalSeparator=","
+							required="true" />
 
 						<p:outputLabel value="Data de Lançamento:" for="dataLancamento" />
-						<p:calendar id="dataLancamento"
+						<p:calendar id="dataLancamento" required="true"
 							value="#{livroBean.livro.dataLancamento.time}"
-							timezone="America/Sao_Paulo" pattern="dd/MM/yyyy" mask="true" />
+							pattern="dd/MM/yyyy" mask="true" />
 					</h:panelGrid>
 				</p:fieldset>
 
@@ -119,7 +120,8 @@
 					<f:facet name="header">Isbn</f:facet>
 					<h:outputText value="#{livro.isbn}" />
 				</p:column>
-				<p:column filterBy="#{livro.preco}" filterFunction="#{livroBean.precoMenor}">
+				<p:column filterBy="#{livro.preco}"
+					filterFunction="#{livroBean.precoMenor}">
 					<f:facet name="header">Preço</f:facet>
 					<h:outputText value="#{livro.preco}">
 						<f:convertNumber type="currency" pattern="R$ #0.00"
@@ -129,7 +131,7 @@
 				<p:column>
 					<f:facet name="header">Data de lançamento</f:facet>
 					<h:outputText value="#{livro.dataLancamento.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy" timezone="GMT-3" />
+						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
 				</p:column>
 				<p:column>
